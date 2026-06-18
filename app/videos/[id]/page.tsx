@@ -4,6 +4,7 @@ import { EmptyState } from "@/components/empty-state"
 import { PageShell } from "@/components/page-shell"
 import { buttonVariants } from "@/components/ui/button"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
+import { createSupabaseServiceClient } from "@/lib/supabase/service"
 import { getVideoById } from "@/lib/videos"
 import Link from "next/link"
 
@@ -28,7 +29,8 @@ export default async function VideoPage({ params }: VideoPageProps) {
     redirect(`/login?redirect=/videos/${video.id}`)
   }
 
-  const { data: signedVideo } = await supabase.storage
+  const serviceSupabase = createSupabaseServiceClient()
+  const { data: signedVideo } = await serviceSupabase.storage
     .from("videos")
     .createSignedUrl(video.storage_path, 60 * 60)
 
