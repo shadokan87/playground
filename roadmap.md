@@ -31,16 +31,16 @@
 ## Phase 3 - Video catalog and playback
 
 ### Subphase 3.1 - Video schema and listing
-- [ ] Create the database tables for users, profiles, and videos.
-- [ ] Render the catalog from Supabase data.
-- [ ] Show access state for each video as free or sign-in only.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Create the database tables for users, profiles, and videos.
+- [x] Render the catalog from Supabase data.
+- [x] Show access state for each video as free or sign-in only.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ### Subphase 3.2 - Playback flow
-- [ ] Implement free video playback.
-- [ ] Gate sign-in-only playback behind authentication.
-- [ ] Add the signed URL or equivalent streaming flow from Supabase Storage.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Implement free video playback.
+- [x] Gate sign-in-only playback behind authentication.
+- [x] Add the signed URL or equivalent streaming flow from Supabase Storage.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ## Phase 4 - Admin video management
 
