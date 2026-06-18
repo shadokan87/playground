@@ -12,6 +12,7 @@ type SiteHeaderProps = {
 export async function SiteHeader({ signedInLabel = "Sign in" }: SiteHeaderProps) {
   const supabase = await createSupabaseServerClient()
   const { data } = await supabase.auth.getUser()
+  const user = data.user
   const isAdmin = data.user?.email?.trim().toLowerCase() === getAdminEmail()
   const studioHref = isAdmin ? "/admin" : "/login?redirect=/admin"
 
@@ -22,9 +23,17 @@ export async function SiteHeader({ signedInLabel = "Sign in" }: SiteHeaderProps)
         <h1 className="text-sm font-medium">Creator Training Platform</h1>
       </div>
       <div className="flex items-center gap-2">
-        <Link className={cn(buttonVariants({ variant: "outline", size: "sm" }))} href="/login">
-          {signedInLabel === "Sign in" ? "Sign in" : signedInLabel}
-        </Link>
+        {user ? (
+          <form action="/auth/signout" method="post">
+            <button className={cn(buttonVariants({ variant: "outline", size: "sm" }))} type="submit">
+              Log out
+            </button>
+          </form>
+        ) : (
+          <Link className={cn(buttonVariants({ variant: "outline", size: "sm" }))} href="/login">
+            {signedInLabel === "Sign in" ? "Sign in" : signedInLabel}
+          </Link>
+        )}
         <Link className={buttonVariants({ size: "sm" })} href={studioHref}>
           Studio
         </Link>
