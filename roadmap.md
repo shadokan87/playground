@@ -12,7 +12,7 @@
 - [x] Build the global layout, navigation, and shared UI primitives.
 - [x] Add the home page and a minimal video catalog shell.
 - [x] Add loading, error, and empty states for the main surfaces.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ## Phase 2 - Authentication and access control
 
