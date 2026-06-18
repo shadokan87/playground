@@ -1,18 +1,117 @@
 "use client"
 
-import { useActionState } from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import { createSupabaseBrowserClient } from "@/lib/supabase/browser"
 
-import { uploadVideo, type AdminUploadState } from "./actions"
-
-const initialState: AdminUploadState = { message: "" }
+type UploadState = {
+  message: string
+  error?: string
+}
 
 export function AdminUploadForm() {
-  const [state, action, pending] = useActionState(uploadVideo, initialState)
+  const [state, setState] = useState<UploadState>({ message: "" })
+  const [pending, setPending] = useState(false)
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setPending(true)
+    setState({ message: "" })
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+
+    const title = String(formData.get("title") ?? "").trim()
+    const description = String(formData.get("description") ?? "").trim()
+    const accessLevel = String(formData.get("accessLevel") ?? "free")
+    const file = formData.get("videoFile")
+
+    if (!title || !description) {
+      setState({ message: "", error: "Title and description are required." })
+      setPending(false)
+      return
+    }
+
+    if (accessLevel !== "free" && accessLevel !== "sign_in_only") {
+      setState({ message: "", error: "Select a valid access level." })
+      setPending(false)
+      return
+    }
+
+    if (!(file instanceof File) || file.size === 0) {
+      setState({ message: "", error: "Choose a video file to upload." })
+      setPending(false)
+      return
+    }
+
+    try {
+      const uploadUrlResponse = await fetch("/api/admin/videos/upload-url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          contentType: file.type || "video/mp4",
+        }),
+      })
+
+      const uploadUrlPayload = (await uploadUrlResponse.json()) as
+        | { path: string; token: string }
+        | { error: string }
+
+      if (!uploadUrlResponse.ok || !("path" in uploadUrlPayload) || !("token" in uploadUrlPayload)) {
+        throw new Error("error" in uploadUrlPayload ? uploadUrlPayload.error : "Failed to prepare the upload.")
+      }
+
+      const supabase = createSupabaseBrowserClient()
+      const { error: uploadError } = await supabase.storage
+        .from("videos")
+        .uploadToSignedUrl(uploadUrlPayload.path, uploadUrlPayload.token, file, {
+          contentType: file.type || "video/mp4",
+          upsert: false,
+        })
+
+      if (uploadError) {
+        throw new Error(uploadError.message)
+      }
+
+      const finalizeResponse = await fetch("/api/admin/videos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          accessLevel,
+          storagePath: uploadUrlPayload.path,
+        }),
+      })
+
+      const finalizePayload = (await finalizeResponse.json()) as
+        | { message: string }
+        | { error: string }
+
+      if (!finalizeResponse.ok || !("message" in finalizePayload)) {
+        throw new Error("error" in finalizePayload ? finalizePayload.error : "Failed to save the catalog entry.")
+      }
+
+      setState({ message: finalizePayload.message })
+      form.reset()
+    } catch (error) {
+      setState({
+        message: "",
+        error: error instanceof Error ? error.message : "Unexpected upload error.",
+      })
+    } finally {
+      setPending(false)
+    }
+  }
 
   return (
-    <form action={action} className="mt-8 space-y-4">
+    <form onSubmit={handleSubmit} className="mt-8 space-y-4">
       <label className="grid gap-2 text-sm">
         <span className="font-medium">Title</span>
         <input name="title" required className="h-11 rounded-xl border border-border bg-background px-4 outline-none focus:border-ring" />
