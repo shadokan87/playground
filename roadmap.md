@@ -73,7 +73,7 @@
 ## Phase 6 - Hardening
 
 ### Subphase 6.1 - Validation and cleanup
-- [ ] Test login, redirect, upload, playback, and preferences end to end.
-- [ ] Tighten any missing guards or loading states.
-- [ ] Remove dead code and keep the implementation minimal.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Test login, redirect, upload, playback, and preferences end to end.
+- [x] Tighten any missing guards or loading states.
+- [x] Remove dead code and keep the implementation minimal.
+- [x] Create github commit and push this subphase with an explicit commit.
