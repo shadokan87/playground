@@ -17,7 +17,7 @@ const mono = Inter({
 
 export const metadata: Metadata = {
   title: "Le Guide Ultime",
-  description: "Lean video MVP for gated and free content.",
+  description: "A creator training platform for building social content people actually stop to watch.",
 }
 
 export default function RootLayout({

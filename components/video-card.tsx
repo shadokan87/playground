@@ -1,12 +1,15 @@
+import Link from "next/link"
+
 type VideoCardProps = {
+  href?: string
   title: string
   description: string
   access: string
-  runtime: string
+  runtime?: string
 }
 
-export function VideoCard({ title, description, access, runtime }: VideoCardProps) {
-  return (
+export function VideoCard({ href, title, description, access, runtime }: VideoCardProps) {
+  const content = (
     <article className="rounded-2xl border border-border/70 bg-muted/30 p-4 transition-colors hover:bg-muted/50">
       <div className="mb-3 flex items-center justify-between gap-3">
         <h3 className="font-medium">{title}</h3>
@@ -15,7 +18,17 @@ export function VideoCard({ title, description, access, runtime }: VideoCardProp
         </span>
       </div>
       <p className="text-sm leading-6 text-muted-foreground">{description}</p>
-      <p className="mt-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">Runtime {runtime}</p>
+      {runtime ? <p className="mt-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">Runtime {runtime}</p> : null}
     </article>
+  )
+
+  if (!href) {
+    return content
+  }
+
+  return (
+    <Link className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-2xl" href={href}>
+      {content}
+    </Link>
   )
 }
