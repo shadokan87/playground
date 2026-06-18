@@ -59,10 +59,10 @@
 ## Phase 5 - Preferences and email loop
 
 ### Subphase 5.1 - Preferences page
-- [ ] Build `/preferences` for newsletter opt-in and opt-out.
-- [ ] Save preference changes to the database.
-- [ ] Handle unauthenticated access with redirect back after login.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Build `/preferences` for newsletter opt-in and opt-out.
+- [x] Save preference changes to the database.
+- [x] Handle unauthenticated access with redirect back after login.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ### Subphase 5.2 - Notification readiness
 - [ ] Add the data hooks needed for `New Video Released` emails.
