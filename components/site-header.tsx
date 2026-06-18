@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { ThemeToggle } from "@/components/theme-toggle"
 import { buttonVariants } from "@/components/ui/button"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { getAdminEmail } from "@/lib/env"
@@ -23,6 +24,7 @@ export async function SiteHeader({ signedInLabel = "Sign in" }: SiteHeaderProps)
         <h1 className="text-sm font-medium">Creator Training Platform</h1>
       </div>
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         {user ? (
           <form action="/auth/signout" method="post">
             <button className={cn(buttonVariants({ variant: "outline", size: "sm" }))} type="submit">
