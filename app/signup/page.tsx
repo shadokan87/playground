@@ -7,19 +7,17 @@ import { PageShell } from "@/components/page-shell"
 import { normalizeRedirectPath } from "@/lib/auth"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 
-import { LoginForm } from "./login-form"
+import { SignupForm } from "./signup-form"
 
-type LoginPageProps = {
+type SignupPageProps = {
   searchParams?: Promise<{
     redirect?: string
-    error?: string
   }>
 }
 
-export default async function LoginPage({ searchParams }: LoginPageProps) {
+export default async function SignupPage({ searchParams }: SignupPageProps) {
   const params = (await searchParams) ?? {}
   const redirectPath = normalizeRedirectPath(params.redirect)
-  const callbackError = typeof params.error === "string" ? params.error : ""
   const supabase = await createSupabaseServerClient()
   const {
     data: { user },
@@ -32,25 +30,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   return (
     <PageShell>
       <div className="mx-auto max-w-xl rounded-3xl border border-border/70 bg-background/80 p-8 shadow-xl shadow-slate-950/5 backdrop-blur">
-        <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">Member access</p>
-        <h1 className="mt-3 text-3xl font-medium">Sign in to the creator classroom.</h1>
+        <p className="text-xs uppercase tracking-[0.35em] text-muted-foreground">New member</p>
+        <h1 className="mt-3 text-3xl font-medium">Create your creator account.</h1>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">
-          Use your email and password to unlock lessons, templates, and premium content designed to help you create better social media posts with less guesswork.
+          Set a password for your training account, confirm your email if required, and then come back to access the member area.
         </p>
 
-        {callbackError ? (
-          <p className="mt-4 rounded-2xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-            {callbackError}
-          </p>
-        ) : null}
-
         <div className="mt-8">
-          <LoginForm redirect={redirectPath} />
+          <SignupForm redirect={redirectPath} />
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-4 text-sm text-muted-foreground">
-          <Link href={redirectPath === "/preferences" ? "/preferences" : "/"} className="underline-offset-4 hover:underline">
-            Keep exploring the library
+          <Link href="/login" className="underline-offset-4 hover:underline">
+            Back to sign in
           </Link>
           <Link className={buttonVariants({ variant: "outline", size: "sm" })} href="/">
             Back home

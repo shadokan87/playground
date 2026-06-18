@@ -1,20 +1,20 @@
 "use client"
 
-import { useActionState } from "react"
 import Link from "next/link"
+import { useActionState } from "react"
 
 import { Button } from "@/components/ui/button"
 
-import { signInWithPassword, type LoginState } from "./actions"
+import { signUpWithPassword, type LoginState } from "@/app/login/actions"
 
 const initialState: LoginState = { message: "" }
 
-type LoginFormProps = {
+type SignupFormProps = {
   redirect: string
 }
 
-export function LoginForm({ redirect }: LoginFormProps) {
-  const [state, action, pending] = useActionState(signInWithPassword, initialState)
+export function SignupForm({ redirect }: SignupFormProps) {
+  const [state, action, pending] = useActionState(signUpWithPassword, initialState)
 
   return (
     <form action={action} className="space-y-4">
@@ -35,8 +35,20 @@ export function LoginForm({ redirect }: LoginFormProps) {
         <input
           name="password"
           type="password"
-          autoComplete="current-password"
-          placeholder="Enter your password"
+          autoComplete="new-password"
+          placeholder="Create a password"
+          className="h-11 rounded-xl border border-border bg-background px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
+          minLength={8}
+          required
+        />
+      </label>
+      <label className="grid gap-2">
+        <span className="text-sm font-medium">Confirm password</span>
+        <input
+          name="confirmPassword"
+          type="password"
+          autoComplete="new-password"
+          placeholder="Repeat your password"
           className="h-11 rounded-xl border border-border bg-background px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
           minLength={8}
           required
@@ -45,12 +57,12 @@ export function LoginForm({ redirect }: LoginFormProps) {
       {state.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
       {state.message ? <p className="text-sm text-emerald-600">{state.message}</p> : null}
       <Button className="w-full" type="submit" disabled={pending}>
-        {pending ? "Signing in..." : "Sign in"}
+        {pending ? "Creating account..." : "Create account"}
       </Button>
       <p className="text-sm text-muted-foreground">
-        Need an account?{" "}
-        <Link className="underline-offset-4 hover:underline" href={`/signup?redirect=${encodeURIComponent(redirect)}`}>
-          Create one here
+        Already registered?{" "}
+        <Link className="underline-offset-4 hover:underline" href={`/login?redirect=${encodeURIComponent(redirect)}`}>
+          Sign in here
         </Link>
         .
       </p>
