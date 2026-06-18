@@ -45,16 +45,16 @@
 ## Phase 4 - Admin video management
 
 ### Subphase 4.1 - Admin authorization
-- [ ] Compare the signed-in email against `ADMIN_EMAIL`.
-- [ ] Hide admin controls for non-admin users.
-- [ ] Block direct access to admin routes for non-admin users.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Compare the signed-in email against `ADMIN_EMAIL`.
+- [x] Hide admin controls for non-admin users.
+- [x] Block direct access to admin routes for non-admin users.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ### Subphase 4.2 - Upload flow
-- [ ] Build the admin upload form with title, description, access level, and file input.
-- [ ] Upload videos to Supabase Storage.
-- [ ] Save or update the matching video row after upload.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Build the admin upload form with title, description, access level, and file input.
+- [x] Upload videos to Supabase Storage.
+- [x] Save or update the matching video row after upload.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ## Phase 5 - Preferences and email loop
 
