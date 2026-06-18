@@ -65,10 +65,10 @@
 - [x] Create github commit and push this subphase with an explicit commit.
 
 ### Subphase 5.2 - Notification readiness
-- [ ] Add the data hooks needed for `New Video Released` emails.
-- [ ] Include the unsubscribe link that points to `/preferences`.
-- [ ] Verify the end-to-end flow from email click to preference update.
-- [ ] Create github commit and push this subphase with an explicit commit.
+- [x] Add the data hooks needed for `New Video Released` emails.
+- [x] Include the unsubscribe link that points to `/preferences`.
+- [x] Verify the end-to-end flow from email click to preference update.
+- [x] Create github commit and push this subphase with an explicit commit.
 
 ## Phase 6 - Hardening
 
