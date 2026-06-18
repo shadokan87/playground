@@ -1,21 +1,33 @@
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 import { buttonVariants } from "@/components/ui/button"
 import { PageShell } from "@/components/page-shell"
 
 import { normalizeRedirectPath } from "@/lib/auth"
+import { createSupabaseServerClient } from "@/lib/supabase/server"
 
 import { LoginForm } from "./login-form"
 
 type LoginPageProps = {
   searchParams?: Promise<{
     redirect?: string
+    error?: string
   }>
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = (await searchParams) ?? {}
-  const redirect = normalizeRedirectPath(params.redirect)
+  const redirectPath = normalizeRedirectPath(params.redirect)
+  const callbackError = typeof params.error === "string" ? params.error : ""
+  const supabase = await createSupabaseServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user) {
+    redirect(redirectPath)
+  }
 
   return (
     <PageShell>
@@ -26,12 +38,18 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           Sign in once to unlock lessons, templates, and premium content designed to help you create better social media posts with less guesswork.
         </p>
 
+        {callbackError ? (
+          <p className="mt-4 rounded-2xl border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {callbackError}
+          </p>
+        ) : null}
+
         <div className="mt-8">
-          <LoginForm redirect={redirect} />
+          <LoginForm redirect={redirectPath} />
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-4 text-sm text-muted-foreground">
-          <Link href={redirect === "/preferences" ? "/preferences" : "/"} className="underline-offset-4 hover:underline">
+          <Link href={redirectPath === "/preferences" ? "/preferences" : "/"} className="underline-offset-4 hover:underline">
             Keep exploring the library
           </Link>
           <Link className={buttonVariants({ variant: "outline", size: "sm" })} href="/">
